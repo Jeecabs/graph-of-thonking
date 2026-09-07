@@ -4,7 +4,7 @@
 
 Give Pi a code map before it reads the repository.
 
-Thonking is intentional. A native Pi wrapper for [Ripwire](https://github.com/redhat-et/ripwire). Four tools cover task context, symbol navigation, change evidence, and diagnostics. No MCP server, automatic scans, or tool overrides.
+A native Pi wrapper for [Ripwire](https://github.com/redhat-et/ripwire). Four tools cover task context, symbol navigation, change evidence, and diagnostics. No MCP server, automatic scans, or tool overrides.
 
 ## Install
 
