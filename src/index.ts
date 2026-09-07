@@ -21,7 +21,7 @@ const clean = (text: string) => stripVTControlCharacters(text).replace(/[\x00-\x
 
 function card(text: string, details: Details | undefined, expanded: boolean, theme: Theme): Text {
   if (!details) return new Text(clean(text), 0, 0);
-  const summary = `${details.action} · ${details.outcome} · ${(details.durationMs / 1000).toFixed(2)}s · ${details.bytes.toLocaleString()} bytes`;
+  const summary = `${details.action} / ${details.outcome} / ${(details.durationMs / 1000).toFixed(2)}s / ${details.bytes.toLocaleString()} bytes`;
   const color = details.outcome === "report" ? "accent" : "warning";
   const lines = [theme.fg(color, summary)];
   if (details.truncated) lines.push(theme.fg("warning", "Output capped. Full report saved."));
@@ -61,12 +61,12 @@ export default function graphOfThonking(pi: ExtensionAPI) {
       return { content: [{ type: "text", text }], details: { ...result, text: "", action: query.action, root, binary, outcome: state } };
     })();
     pending.add(work);
-    if (ctx.hasUI) ctx.ui.setStatus("ripwire", `ripwire · ${controllers.size} running`);
+    if (ctx.hasUI) ctx.ui.setStatus("ripwire", `ripwire / ${controllers.size} running`);
     try { return await work; }
     finally {
       controllers.delete(controller);
       pending.delete(work);
-      if (!closed && ctx.hasUI) ctx.ui.setStatus("ripwire", controllers.size ? `ripwire · ${controllers.size} running` : undefined);
+      if (!closed && ctx.hasUI) ctx.ui.setStatus("ripwire", controllers.size ? `ripwire / ${controllers.size} running` : undefined);
     }
   }
 
