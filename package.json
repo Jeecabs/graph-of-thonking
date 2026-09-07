@@ -1,0 +1,52 @@
+{
+  "name": "@jeecabs/graph-of-thonking",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jeecabs/graph-of-thonking.git"
+  },
+  "type": "module",
+  "description": "Graph of Thonking: session-safe Ripwire code intelligence for Pi.",
+  "keywords": [
+    "pi-package",
+    "ripwire"
+  ],
+  "files": [
+    "src",
+    "skills",
+    "assets",
+    "README.md",
+    "docs"
+  ],
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  },
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "test": "node --import tsx --test tests/*.test.ts",
+    "check": "tsgo --project tsconfig.json"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-tui": "*",
+    "typebox": "*"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-ai": "0.85.1",
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "@earendil-works/pi-tui": "0.85.1",
+    "@types/node": "^24.3.0",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
+    "tsx": "^4.23.13",
+    "typebox": "1.1.38"
+  }
+}

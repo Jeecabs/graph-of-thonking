@@ -1,0 +1,39 @@
+name: Checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - name: Fetch pinned Ripwire binary
+        shell: bash
+        run: |
+          case "$(uname -s)-$(uname -m)" in
+            Linux-x86_64) platform=linux-x64 ;;
+            Darwin-arm64) platform=macos-arm64 ;;
+            Darwin-x86_64) platform=macos-x64 ;;
+            *) echo "Unsupported runner" >&2; exit 1 ;;
+          esac
+          archive="ripwire-0.4.0-${platform}.tar.gz"
+          mkdir -p "$RUNNER_TEMP/ripwire"
+          cd "$RUNNER_TEMP/ripwire"
+          curl -fSL --retry 3 -O "https://github.com/redhat-et/ripwire/releases/download/v0.4.0/$archive"
+          curl -fSL --retry 3 -O "https://github.com/redhat-et/ripwire/releases/download/v0.4.0/$archive.sha256"
+          shasum -a 256 -c "$archive.sha256"
+          tar -xzf "$archive"
+          echo "RIPWIRE_TEST_BIN=$PWD/ripwire-0.4.0-${platform}/ripwire" >> "$GITHUB_ENV"
+      - run: npm test
+      - run: npm pack --dry-run
