@@ -1,5 +1,9 @@
-import { StringEnum } from "@earendil-works/pi-ai";
 import { Type, type Static } from "typebox";
+
+
+// pi-ai 1.x StringEnum returns a pi-schema type that TypeBox's Static can't infer; keep TypeBox typing with the same {type:"string", enum} shape.
+const StringEnum = <T extends readonly string[]>(values: T, options?: { description?: string; default?: T[number] }) =>
+  Type.Unsafe<T[number]>({ type: "string", enum: [...values], ...options });
 
 export const actions = ["map", "search", "pack", "recall", "expand", "outline", "callers", "callees", "uses", "impact", "verify", "graph", "situ", "tests", "review", "quality", "delta", "trace", "help", "status"] as const;
 export const QuerySchema = Type.Object({

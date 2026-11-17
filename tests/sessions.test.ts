@@ -3,13 +3,13 @@ import { access, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
-import type { ExtensionAPI, ExtensionContext, ToolDefinition } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext, ExtensionToolContext, ToolDefinition } from "@earendil-works/pi-coding-agent";
 import ripwire from "../src/index.js";
 
 function host(root: string) {
   const tools = new Map<string, ToolDefinition>();
   let shutdown: (() => Promise<void>) | undefined;
-  const ctx = { cwd: root, hasUI: false } as ExtensionContext;
+  const ctx = { cwd: root, hasUI: false } as ExtensionToolContext;
   const api = {
     registerTool: (tool: ToolDefinition) => tools.set(tool.name, tool),
     registerCommand: () => {},

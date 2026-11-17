@@ -3,12 +3,16 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { stripVTControlCharacters } from "node:util";
 import { keyHint, type ExtensionAPI, type ExtensionContext, type Theme } from "@earendil-works/pi-coding-agent";
-import { StringEnum } from "@earendil-works/pi-ai";
 import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { actions, buildArgs, outcome, QuerySchema, type Query } from "./operations.js";
 import { chooseQuery, withLoader } from "./command.js";
 import { localPath, resolveBinary, run, type RunResult } from "./runner.js";
+
+
+// pi-ai 1.x StringEnum returns a pi-schema type that TypeBox's Static can't infer; keep TypeBox typing with the same {type:"string", enum} shape.
+const StringEnum = <T extends readonly string[]>(values: T, options?: { description?: string; default?: T[number] }) =>
+  Type.Unsafe<T[number]>({ type: "string", enum: [...values], ...options });
 
 interface Details extends RunResult {
   action: Query["action"];
