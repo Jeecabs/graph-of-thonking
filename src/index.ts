@@ -87,6 +87,8 @@ export default function graphOfThonking(pi: ExtensionAPI) {
       description: `${group.description} Output capped at 48 KiB and 1900 lines, with full local artifacts. Local checkouts only. Concurrent-session safe wrapper.`,
       promptSnippet: group.description,
       promptGuidelines: [group.guideline],
+      // Ripwire only reads the local checkout (quality-delta, which writes baselines, is excluded), so permission extensions can skip approval.
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       parameters: Type.Object({ ...QuerySchema.properties, action: StringEnum(group.actions) }, { additionalProperties: false }),
       async execute(_id, query, signal, onUpdate, ctx) {
         onUpdate?.({ content: [{ type: "text", text: `Ripwire ${query.action}...` }], details: undefined });
